@@ -13,7 +13,7 @@
 	<meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="./style/style.css">
+	<link rel="stylesheet" href="./css/style.css">
 	<title>O-ZONE GLO ACADEMY</title>
 </head>
 
@@ -74,12 +74,23 @@
 									</div>
 									<div class="filter-price_input-wrapper">
 										<label for="max" class="filter-price_label">до</label>
-										<input id="max" class="filter-price_input"></div>
+                                        <input id="max" class="filter-price_input">
+                                    </div>
 								</div>
 							</form>
 						</div>
 						<div class="filter-check">
 							<label class="filter-check_label">
+								<input type="checkbox" class="filter-check_checkbox" id="discount-checkbox">
+								<span class="filter-check_checkmark"></span>
+								<span class="filter-check_label-text">Акция</span>
+                            </label>
+                            <label class="filter-check_label">
+								<input type="checkbox" class="filter-check_checkbox" id="discount-checkbox">
+								<span class="filter-check_checkmark"></span>
+								<span class="filter-check_label-text">Акция</span>
+                            </label>
+                            <label class="filter-check_label">
 								<input type="checkbox" class="filter-check_checkbox" id="discount-checkbox">
 								<span class="filter-check_checkmark"></span>
 								<span class="filter-check_label-text">Акция</span>
@@ -225,7 +236,9 @@
 
 			</div>
 		</div>
-	</div>
+    </div>
+    
+    <script src="./js/main.js"></script>
 </body>
 
 </html>
