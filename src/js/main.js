@@ -87,28 +87,66 @@ function addCart() {
     }
 }
 addCart();
-
-
 //работа с корзиной (конец)
 
+
+//работа с фильтром акции
 function actionPage() {
     const cards = document.querySelectorAll('.goods .card'),
-    discountCheckbox = document.getElementById('discount-checkbox');
+        discountCheckbox = document.getElementById('discount-checkbox'),
+        goods = document.querySelector('.goods'),
+        min = document.getElementById('min'),
+        max = document.getElementById('max'),
+        search = document.querySelector('.search-wrapper_input'),
+        searchBtn = document.querySelector('.search-btn');
 
     discountCheckbox.addEventListener('click', () => {
         cards.forEach((elem) => {
             if (discountCheckbox.checked) {
-                if (!elem.querySelector('.card-sale')){
-                    elem.parentNode.style.display = 'none';
+                if (!elem.querySelector('.card-sale')) {
+                    elem.parentNode.remove();
+                    // elem.parentNode.style.display = 'none';
                 }
-            } else  {
-                elem.parentNode.style.display = '';
+            } else {
+                goods.appendChild(elem.parentNode);
+                // elem.parentNode.style.display = 'none';
             }
         });
     });
+
+    function filterPrice() {
+        cards.forEach((card) => {
+            const cardPrice = card.querySelector('.card-price');
+            const price = parseFloat(cardPrice.textContent);
+
+            if ((min.value && price < min.value) || (max.value && price > max.value)) {
+                card.parentNode.remove();
+                // elem.parentNode.style.display = 'none';
+            } else {
+                goods.appendChild(card.parentNode);
+                // elem.parentNode.style.display = 'none';
+            }
+        });
+    }
+    //конец работы с фильтром по акции
+
+    // фильтр по цене
+    min.addEventListener('change', filterPrice);
+    max.addEventListener('change', filterPrice);
+
+    // поиск 
+    searchBtn.addEventListener('click', () => {
+        const searchText = new RegExp(search.value.trim(), 'i');
+        cards.forEach((card) => {
+            const title = card.querySelector('.card-title');
+            if (!searchText.test(title.textContent)) {
+                card.parentNode.style.display = 'none';
+            } else {
+                card.parentNode.style.display = '';
+            }
+        });
+        search.value = '';
+    });
 }
 actionPage();
-//работа с фильтром акции
-
-
 // конец работы с фильтром акции
