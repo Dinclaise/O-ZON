@@ -14,7 +14,7 @@ function toggleCheckbox() {
         });
     });
 }
-toggleCheckbox();
+
 
 // end checkbox
 
@@ -35,7 +35,7 @@ function toggleCart() {
         document.body.style.overflow = '';
     });
 }
-toggleCart();
+
 // end basket
 
 // работа с корзиной (начало)
@@ -86,7 +86,7 @@ function addCart() {
         }
     }
 }
-addCart();
+
 //работа с корзиной (конец)
 
 
@@ -100,19 +100,12 @@ function actionPage() {
         search = document.querySelector('.search-wrapper_input'),
         searchBtn = document.querySelector('.search-btn');
 
-    discountCheckbox.addEventListener('click', () => {
-        cards.forEach((elem) => {
-            if (discountCheckbox.checked) {
-                if (!elem.querySelector('.card-sale')) {
-                    elem.parentNode.remove();
-                    // elem.parentNode.style.display = 'none';
-                }
-            } else {
-                goods.appendChild(elem.parentNode);
-                // elem.parentNode.style.display = 'none';
-            }
-        });
-    });
+    // фильтр по цене   
+    discountCheckbox.addEventListener('click', filter);
+    
+        min.addEventListener('change', filter);
+        max.addEventListener('change', filter);
+
 
     function filterPrice() {
         cards.forEach((card) => {
@@ -130,9 +123,23 @@ function actionPage() {
     }
     //конец работы с фильтром по акции
 
-    // фильтр по цене
-    min.addEventListener('change', filterPrice);
-    max.addEventListener('change', filterPrice);
+
+    function filter() {
+        cards.forEach((card) => {
+            const cardPrice = card.querySelector('.card-price');
+            const price = parseFloat(cardPrice.textContent);
+            const discount = card.querySelector('.card-sale');
+
+            if ((min.value && price < min.value) || (max.value && price > max.value)) {
+                card.parentNode.style.display = 'none';
+            } else if (discountCheckbox.checked && !discount) {
+                card.parentNode.style.display = 'none';
+            } else {
+                card.parentNode.style.display = '';
+            }
+        });
+    }
+    
 
     // поиск 
     searchBtn.addEventListener('click', () => {
@@ -148,5 +155,81 @@ function actionPage() {
         search.value = '';
     });
 }
-actionPage();
+
 // конец работы с фильтром акции
+
+
+
+//get data from server
+
+function getData() {
+    const goodsWrapper = document.querySelector('.goods');
+
+    return fetch('./db/db.json')
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Данные не были получены, ошибка: ' + response.status);
+            }
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(err => {
+            console.warn(err);
+            goodsWrapper.innerHTML = '<div style="color: red; font-size: 30px">Упс, что-то пошло не так!</div>';
+        });
+        
+  
+
+}
+
+// выводим карточки товара
+function renderCards(data) {
+    const goodsWrapper = document.querySelector('.goods');
+    data.goods.forEach(thing => {
+        const card = document.createElement('div');
+        card.className = 'col-12 col-md-6 col-lg-4 col-xl-3';
+        card.innerHTML = `
+                                <div class="card" data-category="${thing.category}">
+                                ${thing.sale ? '<div class="card-sale">🔥Hot Sale🔥</div>' : ''}
+									<div class="card-img-wrapper">
+										<span class="card-img-top"
+											style="background-image: url('${thing.img}')"></span>
+									</div>
+									<div class="card-body justify-content-between">
+										<div class="card-price" style='${thing.sale ? 'color:red' : ''}'>${thing.price + ' ​₽'}</div>
+										<h5 class="card-title">${thing.title}</h5>
+										<button class="btn btn-primary">В корзину</button>
+									</div>
+								</div>
+        `;
+        goodsWrapper.appendChild(card);
+    });
+}
+//----end get data from server
+
+
+//каталог (Catalog)
+
+function renderCatalog() {
+    const cards = document.querySelectorAll('.goods .card');
+    cards.forEach((card) => {
+        console.dir(card.dataset.category);
+    })
+}
+
+
+
+
+
+
+getData().then((data) => {
+    renderCards(data);
+    actionPage();
+    addCart();
+    toggleCart();
+    toggleCheckbox();
+    renderCatalog();
+});
