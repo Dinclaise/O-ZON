@@ -1,7 +1,6 @@
 {
   "name": "site_1",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +15,18 @@
     "gulp": "^4.0.2",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5"
-  }
+    "gulp-sourcemaps": "^2.6.5",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dinclaise/O-ZON.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Dinclaise/O-ZON/issues"
+  },
+  "homepage": "https://github.com/Dinclaise/O-ZON#readme",
+  "description": ""
 }
